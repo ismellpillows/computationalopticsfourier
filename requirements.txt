@@ -2,13 +2,13 @@ numpy
 pandas
 matplotlib
 scipy
-scikit-learn
 seaborn
 pillow
 soundfile
 librosa
-datasets
 requests
 tqdm
 joblib
 ipykernel
+tensorflow-cpu
+scikit-learn

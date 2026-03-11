@@ -1,81 +1,46 @@
 # Computational Optics from Audio Fourier Fields
 
-This project turns labeled audio clips into optics-inspired images and tests whether those images are useful for music genre classification.
+This project transforms music clips into optics-inspired images and evaluates whether those images can support music genre recognition.
 
-## What is in this repo?
+## Final pipeline
 
-- `audio_optics_genre_research.ipynb` — the main research notebook
-- `sample.ipynb` — older exploratory notebook provided as a reference
-- `TestAudio2.mp3` — local sample audio for transform demos
-- `DEV.md` — running developer journal and implementation notes
+The final notebook uses:
+
+- the GTZAN dataset,
+- 5-second windows with 2.5-second hop,
+- mel-scaled frequency organization,
+- a strong baseline based on mel spectrogram images,
+- optics-derived image variants built from the same windows,
+- a three-channel mel-optics representation containing magnitude, phase, and propagated intensity,
+- dataset-level standardization,
+- mild geometric augmentation, and
+- a compact residual CNN.
+
+## Main result
+
+The final selected system is:
+
+- **representation:** `mel_optics_multichannel`
+- **model:** `residual_cnn`
+
+In the executed comparison run recorded by the project summary, this design outperformed the mel spectrogram baseline and reached approximately:
+
+- **final test accuracy:** 0.803
+- **final macro F1:** 0.808
+
+## Files
+
+- `audio_optics_genre_research.ipynb` — final research notebook
+- `sample.ipynb` — original exploratory notebook kept for reference
+- `DEV.md` — developer notes and implementation record
 - `requirements.txt` — Python dependencies
+- `outputs/run_summary.json` — final run summary and metrics
 
-## Project idea
+## Running the project
 
-The notebook treats the STFT of an audio signal as a complex field $E(t, f)$ over time and frequency. That allows us to borrow an optics interpretation:
-
-1. compute a complex STFT from audio,
-2. interpret the result as a wave field,
-3. simulate optical measurement using a 2D Fourier transform,
-4. form intensity $I = |\mathcal{F}_2(E)|^2$,
-5. use the resulting images for machine learning.
-
-The project compares three image representations:
-
-- baseline spectrogram image,
-- Cartesian optics intensity image,
-- radial optics intensity image.
-
-## Environment
-
-A virtual environment is expected in `.venv`.
-
-On Windows PowerShell, one workable setup is:
-
-```powershell
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-pip install -r requirements.txt
-python -m ipykernel install --user --name computionalopticsfourier
-```
-
-## How to use the notebook
-
-Open `audio_optics_genre_research.ipynb` and run the cells from top to bottom.
-
-The notebook supports two modes:
-
-1. **Quick demo mode**
-   - uses `TestAudio2.mp3`
-   - does not require downloading the full dataset
-   - validates the audio-to-image pipeline
-
-2. **Dataset mode**
-   - downloads GTZAN from code inside the notebook
-   - extracts labeled audio clips
-   - builds image-derived features
-   - trains and evaluates genre classifiers
-
-Inside the notebook, look for these toggles:
-
-- `DOWNLOAD_GTzan`
-- `RUN_FULL_DATASET`
-- `MAX_PER_GENRE`
-
-## Outputs
-
-Generated artifacts are written under folders such as:
-
-- `data/`
-- `cache/`
-- `outputs/`
-- `figures/`
-- `models/`
-
-A small run summary is written to `outputs/run_summary.json`.
+Use the workspace virtual environment and run the notebook from top to bottom. The notebook includes dataset download code and writes summary outputs automatically.
 
 ## Notes
 
-- The full GTZAN download is large, so the first clean run may take a while.
-- The notebook is intentionally designed around lightweight classical ML baselines for reproducibility.
-- A natural extension is to add a compact CNN trained directly on the generated images.
+- GTZAN contains one unreadable file in the downloaded archive in some environments; the notebook is written to skip corrupt items safely.
+- The final comparison stage uses balanced window sampling to stay within practical memory limits while preserving a fair representation comparison.
