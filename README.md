@@ -23,10 +23,7 @@ The final selected system is:
 - **representation:** `mel_optics_multichannel`
 - **model:** `residual_cnn`
 
-In the executed comparison run recorded by the project summary, this design outperformed the mel spectrogram baseline and reached approximately:
-
-- **final test accuracy:** 0.803
-- **final macro F1:** 0.808
+In the executed comparison run recorded by the project summary, this design outperformed the mel spectrogram baseline.
 
 ## Files
 
